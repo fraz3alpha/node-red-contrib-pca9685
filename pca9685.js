@@ -31,18 +31,19 @@ module.exports = function(RED) {
 
         var node = this;
 
-//        if (node.channel !== undefined) {
-//            node.child = spawn(pca9685Command);
-//            node.status({fill:"green",shape:"dot",text:"common.status.ok"});
-//        }
-
         node.on('input', function(msg) {
             msg.pca9685 = {channel: node.channel,
                            position: msg.payload}
             console.log(msg)
             if (child !== null) {
-                if (this.channel >= 0 && this.channel <= 15) {
-                    child.stdin.write(node.channel + " " + msg.payload+"\n");
+                // Use the channel defined in the node
+                var c = node.channel
+                // If the channel has been overridden in the message, use that one
+                if (msg.channel !== undefined) {
+                    c = msg.channel
+                }
+                if (c >= 0 && c <= 15) {
+                    child.stdin.write(c + " " + msg.payload+"\n");
                 }
             }
 
