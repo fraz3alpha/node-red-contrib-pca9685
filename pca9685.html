@@ -1,0 +1,26 @@
+<script type="text/javascript">
+    RED.nodes.registerType('pca9685',{
+        category: 'function',
+        color: '#a6bbcf',
+        defaults: {
+            name: {value:""}
+        },
+        inputs:1,
+        outputs:1,
+        icon: "file.png",
+        label: function() {
+            return this.name||"pca9685";
+        }
+    });
+</script>
+
+<script type="text/x-red" data-template-name="pca9685">
+    <div class="form-row">
+        <label for="node-input-name"><i class="icon-tag"></i> Name</label>
+        <input type="text" id="node-input-name" placeholder="Name">
+    </div>
+</script>
+
+<script type="text/x-red" data-help-name="pca9685">
+    <p>A node to set a PWM output using a PCA9685 based board</p>
+</script>
