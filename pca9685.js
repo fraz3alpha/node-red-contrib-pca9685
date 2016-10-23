@@ -34,16 +34,31 @@ module.exports = function(RED) {
         node.on('input', function(msg) {
             msg.pca9685 = {channel: node.channel,
                            position: msg.payload}
-            console.log(msg)
+            console.log(msg.payload)
             if (child !== null) {
-                // Use the channel defined in the node
-                var c = node.channel
-                // If the channel has been overridden in the message, use that one
-                if (msg.channel !== undefined) {
-                    c = msg.channel
-                }
-                if (c >= 0 && c <= 15) {
-                    child.stdin.write(c + " " + msg.payload+"\n");
+                // Have we been given an array, containing lots of servo positions?
+                if (Array.isArray(msg.payload)) {
+
+                    msg.payload.forEach(function(element, index, array){
+                        var c = element.channel
+                        var v = element.value
+
+                        if (c !== undefined && v !== undefined) {
+                            child.stdin.write(c + " " + v +"\n");
+                        }
+                    })
+
+                } else {
+
+                    // Use the channel defined in the node
+                    var c = node.channel
+                    // If the channel has been overridden in the message, use that one
+                    if (msg.channel !== undefined) {
+                        c = msg.channel
+                    }
+                    if (c >= 0 && c <= 15) {
+                        child.stdin.write(c + " " + msg.payload+"\n");
+                    }
                 }
             }
 
