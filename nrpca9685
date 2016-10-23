@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+
+BASEDIR=$(dirname $0)
+sudo python -u $BASEDIR/nrpca9685.py $@
